@@ -5,12 +5,14 @@
 #include <vector>
 
 #include "level.h"
+#include "character.h"
 
 using namespace std;
 
 int main()
 {
-    Level lvl1;
-    lvl1.generate(); //generate level first
-    return 0;
+    Scene scene(800,800);
+    Level lvl;
+    scene.set_level(&lvl);
+    scene.window_loop();
 }
