@@ -7,12 +7,25 @@ class Level
 {
 public:
     Level();
-    void generate();
-    void draw();
+    void generate(const sf::RenderWindow *window);
+    void check_colision();
+    void update_actors();
+    void draw(sf::RenderWindow *window);
     ~Level();
+    void move_player(float x,float y);
+    void create_player_bullet();
+
 private:
     std::vector<Actor *> actors_;
+    std::vector<Enemy *> enemies_;
+//    std::vector<Asteroid *> asteroids_;
+//    std::vector<PowerUp *> power_ups_;
+    std::vector<PlayerBullet *> player_shots_;
+//    std::vector<EnemyShot *> enemy_shots_;
     Hero *player_;
+    int enemy_counter;
+    void reload_actors();
+
 };
 
 class Scene
@@ -25,18 +38,9 @@ public:
     Scene(int width, int height); // Create window
     void set_level(Level *ptr); //
     void draw(); //draw scene
-    void events(sf::Event &event); //chceck events
+    void events(sf::Event &event,const sf::Time &elapsed,sf::Clock &clock_shot); //chceck events
     void window_loop(); //window loop
 
-};
-
-class Terrain{
-public:
-    Terrain();
-private:
-    int pos_x,pos_y;
-    bool block_movement = true;
-    bool block_shoots = true;
 };
 
 #endif // MAP_H
