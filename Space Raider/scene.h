@@ -8,6 +8,8 @@ private:
     sf::RenderWindow window_;
     Level* level_;
     sf::RectangleShape plain;
+    int timer, timer2 = 0;
+    int nr_lvl=1;
 
 public:
     Scene(int width, int height); // Create window

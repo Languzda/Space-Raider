@@ -4,7 +4,7 @@
 
 #include <SFML/Graphics.hpp>
 
-enum class Direction { Left, Right, None };
+enum class Direction { Left, Right, Mid };
 
 class Actor : public sf::Sprite //klasa abstrakcyjna wszystkich animowanych obiektów
 {
@@ -22,9 +22,8 @@ class Character : public Actor //klasa abstrakcyjna wszystkich postaci (dzidzicz
 public:
     Character(std::string texture_path, float scale, sf::IntRect rect,
         int x, int y, bool is_Repeated, int hp);
+
     virtual ~Character() = default;
-    //virtual void attack();
-    void shot();
     int getHP();
     void setHP(int hp);
     void change_direction_texture(Direction direction);
@@ -43,6 +42,7 @@ public:
     void change_velocity(const Direction direction);
 private:
     int velocity_x;
+    int velocity_y=0;
 };
 
 //Klasy obiektów

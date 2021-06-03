@@ -1,5 +1,6 @@
 #pragma once
 #include "character.h";
+#include "projectile.h"
 
 class Hero : public Character //klasa postaci sterowanej przez gracza
 {
@@ -9,9 +10,13 @@ public:
     ~Hero();
     void setMultishot();
     void dmgUP();
+    void set_bounce();
     int getPower();
+    std::vector<PlayerProjectile*> getBullet();
 private:
     int multishot_ = 1;
     int power_ = 2;
+    bool bounce = false;
+    //PlayerProjectile bullet;
 
 };

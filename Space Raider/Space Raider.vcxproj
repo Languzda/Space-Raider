@@ -154,6 +154,7 @@
     <ClCompile Include="character.cpp" />
     <ClCompile Include="level.cpp" />
     <ClCompile Include="player.cpp" />
+    <ClCompile Include="powerUp.cpp" />
     <ClCompile Include="projectile.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="score.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="character.h" />
     <ClInclude Include="level.h" />
     <ClInclude Include="player.h" />
+    <ClInclude Include="powerUp.h" />
     <ClInclude Include="projectile.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="score.h" />

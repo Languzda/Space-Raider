@@ -1,15 +1,13 @@
 #include "score.h"
 #include <string>
 
-Score::Score(std::string font_path)
+Score::Score(std::string font_path,sf::Vector2f position,sf::Color color, int value=0)
 {
     if (font.loadFromFile(font_path)) {
         this->setFont(font);
-        this->value = 0;
-        this->valueSTR = "000";
-        this->setFillColor(sf::Color::Red);
-        this->setString(valueSTR);
-        this->setPosition(sf::Vector2f(700, 50));
+        this->setFillColor(color);
+        this->setString(std::to_string(value));
+        this->setPosition(position);
     }
 }
 
@@ -21,3 +19,5 @@ void Score::update_score(const int &points) {
     }
     this->setString(valueSTR);
 }
+
+void Score::update(const int &value) { this->value=value; this->setString(std::to_string(this->value)); }
