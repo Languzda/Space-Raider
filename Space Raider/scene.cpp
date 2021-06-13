@@ -4,19 +4,20 @@ Scene::Scene(int width, int height) : window_(sf::VideoMode(width, height), "Spa
     window_.setFramerateLimit(30);
 };
 
-void Scene::set_level(Level* ptr) {
-    ptr->generate(&window_,1);
+void Scene::set_level(Level* ptr,const int& nr_lvl ) {
+    ptr->generate(&window_,nr_lvl);
     level_ = ptr;
 }
 
-void Scene::draw() {
+int Scene::draw() {
     window_.clear(sf::Color::Black);
     // draw every actor
 
-    level_->draw(&window_);
+    int what_next =level_->draw(&window_);
 
     // end the current frame
     window_.display();
+    return what_next;
 }
 
 void Scene::events(sf::Event& event, const sf::Time& elapsed, sf::Clock& clock_shot) {
@@ -29,9 +30,6 @@ void Scene::events(sf::Event& event, const sf::Time& elapsed, sf::Clock& clock_s
 
     
     {
- /*       if (sf::Event::KeyReleased) {
-
-        }*/
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
             level_->move_player(-300 * 1 / 30/*elapsed.asSeconds()*/, 0);
         }
@@ -51,29 +49,35 @@ void Scene::events(sf::Event& event, const sf::Time& elapsed, sf::Clock& clock_s
     }//player movement
 }
 
-void Scene::window_loop() {
+void Scene::window_loop(Level* lvl) {
     sf::Event event;
     sf::Clock clock;
     sf::Clock clock_shot;
+   
     while (window_.isOpen()) { //when window is open check the events
-        
-        sf::Time time_elapsed = clock.restart();
-        while (window_.pollEvent(event)) { //
-            events(event, time_elapsed, clock_shot);
+        for (int i = 1; i < 4; i++) {
+            this->set_level(lvl, i);
+            do {
+                sf::Time time_elapsed = clock.restart();
+                while (window_.pollEvent(event)) { //
+                    events(event, time_elapsed, clock_shot);
 
-        }
-        if (nr_lvl == 1) {
-            timer++;
-            timer2++;
-            if (timer > 20) {
-                timer = 0;
-                level_->create_enemy_bullet();
-            }
-            if (timer2 > 150) {
-                timer2 = 0;
-                level_->attack_player();
-            }
-        }
-        draw();
+                }
+                if (nr_lvl == 1) {
+                    timer++;
+                    timer2++;
+                    if (timer > 20) {
+                        timer = 0;
+                        level_->create_enemy_bullet();
+                    }
+                    if (timer2 > 150) {
+                        timer2 = 0;
+                        level_->attack_player();
+                    }
+                }
+                /*if (!window_.isOpen()) break;*/
+            }while (draw() != 0);
+        }/*if (!window_.isOpen()) break;*/
+        window_.close();
     }
 }

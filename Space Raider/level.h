@@ -2,6 +2,7 @@
 #include "character.h"
 #include "score.h"
 #include "player.h"
+#include "enemy.h"
 #include "projectile.h"
 #include "powerUp.h"
 
@@ -12,7 +13,7 @@ public:
     void generate(const sf::RenderWindow* window, int lvl_nr);
     void check_colision();
     void update_actors();
-    void draw(sf::RenderWindow* window);
+    int draw(sf::RenderWindow* window);
     ~Level();
     void move_player(float x, float y);
     void create_player_bullet();
@@ -22,7 +23,7 @@ public:
 private:
     std::vector<Actor*> actors_;
     std::vector<Enemy*> enemies_;
-    //std::vector<Asteroid *> asteroids_;
+    std::vector<Asteroid *> asteroids_;
     std::vector<PowerUp *> power_ups_;
     std::vector<PlayerProjectile*> player_shots_;
     std::vector<EnemyProjectile *> enemy_shots_;
@@ -31,6 +32,8 @@ private:
     int enemy_counter;
     void reload_actors();
     void create_bonus(Enemy* &enemy);
+    sf::Vector2f window_size_;
+    void clear_actors();
 };
 
 

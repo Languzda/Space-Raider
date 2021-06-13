@@ -31,17 +31,30 @@ void Character::change_direction_texture(Direction direction) {
     if (direction == Direction::Left) this->setTextureRect(animationFrame_[0]);
 }
 
-Enemy::Enemy(std::string texture_path, float scale, sf::IntRect rect,
-    int x, int y, bool is_Repeated = false, int hp = 0, int veX = -25) :
-    Character(texture_path, scale, rect, x, y, is_Repeated, hp), velocity_x(veX) {}
-
-void Enemy::move_e() {
-    this->move(velocity_x *( 1.f / 30), velocity_y*(1.f/30));
+Asteroid::Asteroid(std::string texture_path, float scale, sf::IntRect rect, int x, int y, bool is_Repeated) :
+    Actor(texture_path, scale, rect, x, y, is_Repeated)
+{
+    this->velocity_x_ = rand() % 170 + 100;
+    if (rand() % 2 == 0) this->velocity_x_ = -velocity_x_;
+    this->velocity_y_ = rand() % 170 + 100;
 }
 
-void Enemy::change_velocity(const Direction direction) {
-    if (direction == Direction::Left) velocity_x = -std::abs(velocity_x);
-    if (direction == Direction::Right) velocity_x = std::abs(velocity_x);
-    if (direction == Direction::Mid) { /*velocity_x = 0;*/ velocity_y = 75; }
+bool Asteroid::remake() {
+    if (this->life_span_ == 1) return true;
+    else {
+        this->life_span_--;
+        this->velocity_x_ = rand() % 170 + 100;
+        if (rand() % 2 == 0) this->velocity_x_ = -velocity_x_;
+        this->velocity_y_ = rand() % 170 + 100;
+        this->setPosition(rand() % 700 + 20, 20);
+        return false;
+    }
 }
 
+void Asteroid::move_asteroid(const sf::Time& elapsed) {
+    this->move(this->velocity_x_ * elapsed.asSeconds(), this->velocity_y_ * elapsed.asSeconds());
+}
+
+Asteroid::~Asteroid()
+{
+}

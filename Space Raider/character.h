@@ -30,20 +30,25 @@ public:
 protected:
     int health_points_;
     std::vector<sf::IntRect> animationFrame_;
+    int multishot_ = 1;
 };
 
-class Enemy : public Character //klasa przeciwnika
+class Asteroid : public Actor
 {
 public:
-    Enemy(std::string texture_path, float scale, sf::IntRect rect,
-        int x, int y, bool is_Repeated, int hp, int veX);
-    ~Enemy() {};
-    void move_e();
-    void change_velocity(const Direction direction);
+	Asteroid(std::string texture_path, float scale, sf::IntRect rect, int x, int y, bool is_Repeated);
+	~Asteroid();
+    bool remake();
+    void move_asteroid(const sf::Time& elapsed);
+
 private:
-    int velocity_x;
-    int velocity_y=0;
+    int life_span_ = 3;
+    int velocity_x_=50;
+    int velocity_y_=50;
 };
+
+
+
 
 //Klasy obiektów
 

@@ -13,10 +13,11 @@ public:
     void set_bounce();
     int getPower();
     std::vector<PlayerProjectile*> getBullet();
+    void set_velocity(const float& x);
+    float get_velocity();
 private:
-    int multishot_ = 1;
     int power_ = 2;
     bool bounce = false;
-    //PlayerProjectile bullet;
+    float velocity_x_;
 
 };

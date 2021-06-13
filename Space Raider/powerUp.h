@@ -27,3 +27,11 @@ public:
 	void power_up(Hero* &gracz);
 };
 
+class PowerUpHealth : public PowerUp
+{
+public:
+	PowerUpHealth(std::string texture_path, float scale, sf::IntRect rect, int x, int y, bool is_Repeated);
+	~PowerUpHealth();
+	void power_up(Hero*& gracz);
+};
+

@@ -14,6 +14,6 @@ int main()
 {
     Scene scene(800, 800);
     Level lvl;
-    scene.set_level(&lvl);
-    scene.window_loop();
+    //scene.set_level(&lvl);
+    scene.window_loop(&lvl);
 }

@@ -31,3 +31,15 @@ void PowerUpMultishot::power_up(Hero* &gracz) {
 PowerUpMultishot ::~PowerUpMultishot()
 {
 }
+
+PowerUpHealth::PowerUpHealth(std::string texture_path, float scale, sf::IntRect rect, int x, int y, bool is_Repeated) :
+	PowerUp(texture_path, scale, rect, x, y, is_Repeated) {}
+
+
+void PowerUpHealth::power_up(Hero*& gracz) {
+	gracz->setHP(gracz->getHP()+1);
+}
+
+PowerUpHealth ::~PowerUpHealth()
+{
+}

@@ -13,10 +13,9 @@ private:
 
 public:
     Scene(int width, int height); // Create window
-    void set_level(Level* ptr); //
-    void draw(); //draw scene
+    void set_level(Level* ptr, const int& nr_lvl); //
+    int draw(); //draw scene
     void events(sf::Event& event, const sf::Time& elapsed, sf::Clock& clock_shot); //chceck events
-    void window_loop(); //window loop
-
+    void window_loop(Level* lvl); //window loop
 };
 
