@@ -10,7 +10,6 @@ private:
     sf::RectangleShape plain;
     int timer, timer2 = 0;
     int nr_lvl=1;
-
 public:
     Scene(int width, int height); // Create window
     void set_level(Level* ptr, const int& nr_lvl); //

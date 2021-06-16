@@ -6,6 +6,7 @@ class Score : public sf::Text
 {
 public:
     Score(std::string font_path, sf::Vector2f position, sf::Color color, int value);
+    Score(std::string font_path, sf::Vector2f position, sf::Color color, std::string text);
     void update_score(const int &points);
     void update(const int &value);
 protected:

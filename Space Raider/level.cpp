@@ -16,40 +16,40 @@ Level::~Level() {
 void Level::generate(const sf::RenderWindow* window, int lvl_nr) {
     window_size_ = sf::Vector2f(window->getSize().x,window->getSize().y);
     
+    scene_texture.loadFromFile("Textures/PlainCosmos2.png");
+    for (int i = 0; i < 2; i++) {
+        scene_plain.emplace_back(sf::Sprite(scene_texture));
+        scene_plain[scene_plain.size() - 1].setPosition(0, -798 * i);
+    }
+
     if (lvl_nr == 1) {
-        player_ = new Hero("spaceShip.png", 0.4, sf::IntRect(0, 0, 465, 380), window->getSize().x / 2, window->getSize().y - 150, false, 4);
+        player_ = new Hero("Textures/spaceShip.png", 0.4, sf::IntRect(0, 0, 465, 380), window->getSize().x / 2, window->getSize().y - 150, false, 4);
         actors_.emplace_back(player_);
-        Enemy* chicken;
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 6; i++) {
-                chicken = new  Enemy("enemy.png", 0.1, sf::IntRect(0, 0, 600, 650), 100 * i + 25, window->getSize().y - (400 + 100 * j), false, 3, -75);
-                enemies_.emplace_back(chicken);
-                actors_.emplace_back(chicken);
+                enemies_.emplace_back(new  Enemy("Textures/enemy1.png", 1, sf::IntRect(0, 0, 216, 63), 100 * i + 25, window->getSize().y - (400 + 100 * j), false, 3, -75));
+                actors_.emplace_back(enemies_[enemies_.size()-1]);
             }
         }
-        enemy_counter = 24;
+  
         scoreboads_.emplace_back(new Score("ad_mono.ttf", sf::Vector2f(700, 50), sf::Color::White, 0));
         scoreboads_.emplace_back(new Score("ad_mono.ttf", sf::Vector2f(50, 50), sf::Color::Red, player_->getHP()));
     }
     if (lvl_nr == 2) {
         clear_actors();
-        Enemy* chicken;
-        for (int j = 0; j < 5; j++) {
-            for (int i = 0; i < 6; i++) {
-                chicken = new  Enemy("enemy.png", 0.1, sf::IntRect(0, 0, 600, 650), 100 * i + 25, window->getSize().y - (400 + 100 * j), false, 3, -75);
-                enemies_.emplace_back(chicken);
-                actors_.emplace_back(chicken);
-            }
+
+        for (int i = 0; i < 7; i++) {
+            asteroids_.emplace_back(new Asteroid("Textures/asteroid.png", 0.2, sf::IntRect(0, 0, 320, 320), rand() % 700, 20, false));
+            actors_.emplace_back(asteroids_[asteroids_.size() - 1]);
         }
-        enemy_counter = 30;
     }
     if (lvl_nr == 3) {
         Enemy* chicken;
         clear_actors();
-        chicken = new  Enemy("enemy.png", 0.5, sf::IntRect(0, 0, 600, 650), window->getSize().x / 2, 100, false, 20, -75,4);
+        chicken = new  Enemy("Textures/enemy.png", 0.5, sf::IntRect(0, 0, 600, 1300), window->getSize().x / 2, 100, false, 20, -75,4);
         enemies_.emplace_back(chicken);
         actors_.emplace_back(chicken);
-        enemy_counter = 1;
+
     }
 }
 
@@ -70,16 +70,32 @@ void Level::clear_actors() {
      //player_shots_.erase(player_shots_.begin(), player_shots_.end());
     reload_actors();
 }
+
 void Level::check_colision() {
     bool exit = false;
 
     //sprawdzenie kolizji przeciwników
     for (auto it = enemies_.begin(); it != enemies_.end();) {
-        if ((*it)->getGlobalBounds().left <= 0) { for (auto& ell : enemies_) ell->change_velocity(Direction::Right); break; }
-        if ((*it)->getGlobalBounds().left + (*it)->getGlobalBounds().width > 800) { for (auto& ell : enemies_) ell->change_velocity(Direction::Left); break; }
+        if ((*it)->getGlobalBounds().left <= 0) { for (auto& ell : enemies_) { ell->change_velocity(Direction::Right); ell->change_direction_texture(Direction::Right); } break; }
+        if ((*it)->getGlobalBounds().left + (*it)->getGlobalBounds().width > 800) 
+        { for (auto& ell : enemies_) { ell->change_velocity(Direction::Left); ell->change_direction_texture(Direction::Left);} break; }
         if ((*it)->getGlobalBounds().top + (*it)->getGlobalBounds().height > 800) { delete* it; it = enemies_.erase(it); reload_actors(); break; }
-        if ((*it)->getGlobalBounds().intersects(player_->getGlobalBounds())) { delete* it; it = enemies_.erase(it); player_->setHP(player_->getHP() - 1);  reload_actors(); break; }
+        if (player_->exist()) { if ((*it)->getGlobalBounds().intersects(player_->getGlobalBounds())) { delete* it; it = enemies_.erase(it); player_->setHP(player_->getHP() - 1);  reload_actors(); break; } }
         it++;
+    }
+
+    for (auto it = asteroids_.begin(); it != asteroids_.end(); it++) {
+        if (((*it)->getGlobalBounds().left <= 0) or ((*it)->getGlobalBounds().left + (*it)->getGlobalBounds().width > 800) or ((*it)->getGlobalBounds().top + (*it)->getGlobalBounds().height > 800)) {
+            if ((*it)->remake()) {
+                delete* it;
+                it = asteroids_.erase(it);
+                reload_actors();
+                break;
+            }
+        }
+        if (player_->exist()) {
+            if ((*it)->getGlobalBounds().intersects(player_->getGlobalBounds())) { delete* it; it = asteroids_.erase(it); player_->setHP(player_->getHP() - 1);  reload_actors(); break; }
+        }
     }
 
     for (auto it = power_ups_.begin(); it != power_ups_.end();) {
@@ -125,7 +141,7 @@ void Level::check_colision() {
                     it = player_shots_.erase(it);
                     reload_actors();
                     it++;
-                    enemy_counter--;
+                    //enemy_counter--;
                     scoreboads_[0]->update_score(10);
                     exit = true;
                     break;
@@ -140,6 +156,15 @@ void Level::check_colision() {
                 }
             }
         }
+        for (auto itt = asteroids_.begin(); itt != asteroids_.end(); itt++) { //check that enemy was hitten
+            if ((*itt)->getGlobalBounds().intersects((*it)->getGlobalBounds())) {
+                delete* it;
+                it = player_shots_.erase(it);
+                reload_actors();
+                exit = true;
+                break;
+            }
+        }
         if (exit == true)break;
         it++;
     }
@@ -147,15 +172,21 @@ void Level::check_colision() {
 
 void Level::reload_actors() {
     actors_.erase(actors_.begin(), actors_.end());
-    actors_.emplace_back(player_);
+    if (player_ ->exist()) {
+        actors_.emplace_back(player_);
+    }
+    for (auto& b : player_shots_) {
+        actors_.emplace_back(b);
+    }
     for (auto& eb : enemy_shots_) {
         actors_.emplace_back(eb);
     }
     for (auto& e : enemies_) {
         actors_.emplace_back(e);
     }
-    for (auto& b : player_shots_) {
-        actors_.emplace_back(b);
+ 
+    for (auto& a : asteroids_) {
+        actors_.emplace_back(a);
     }
     //for (auto& b : power_ups_) {
     //    actors_.emplace_back();
@@ -165,12 +196,14 @@ void Level::reload_actors() {
 
 void Level::update_actors() {
     check_colision();
-    player_->move(player_->get_velocity(), 0);
+    if (player_->exist()) {
+        player_->move(player_->get_velocity(), 0);
+    }
     scoreboads_[1]->update(player_->getHP());
     if (player_->getGlobalBounds().left < 0) player_->setPosition(window_size_.x-player_->getGlobalBounds().width , player_->getPosition().y);
     if (player_->getGlobalBounds().left +player_->getGlobalBounds().width> window_size_.x) player_->setPosition(0 , player_->getPosition().y);
     for (auto& bullet : player_shots_) {
-        bullet->rotate(1080 * 1 / 30);
+       
         bullet->move_bullet();
     }
     for (auto& bullet : enemy_shots_) {
@@ -182,11 +215,29 @@ void Level::update_actors() {
     for (auto& bonus : power_ups_) {
         bonus->move_b();
     }
+    for (auto& asteroid : asteroids_) {
+        asteroid->move_asteroid();
+    }
+    for (auto& plain : scene_plain) {
+        if (plain.getGlobalBounds().top >= window_size_.y-2) plain.setPosition(0, -window_size_.y);
+        plain.move(0, 90 * 1.f / 30);
+    }
 
+    if (player_->getHP() <= 0 && player_->exist()==true) {
+        Messege = new Score("ad_mono.ttf", sf::Vector2f(window_size_.x/2-100, window_size_.y/2), sf::Color::White, "\tYou Lose\npress escape to quit");
+        Messege->setPosition(window_size_.x / 2 - Messege->getGlobalBounds().width, window_size_.y / 2);
+        Messege->setScale(2, 2);
+        player_->exist(false);
+        reload_actors();
+    }
 }   //update location & rotation of actors, its checking colision too
 
 int Level::draw(sf::RenderWindow* window) {
     update_actors();
+    
+    for (auto& obj : scene_plain) {
+        window->draw(obj);
+    }
     for (auto& obj : actors_) {
         window->draw(*obj);
     }
@@ -197,7 +248,19 @@ int Level::draw(sf::RenderWindow* window) {
     for (auto& b : power_ups_) {
         window->draw(*b);
     }
-    return enemies_.size();
+    //if (player_->getHP() <= 0) {
+    //    return -1;
+    //}
+
+    if (!player_->exist()) {
+        window->draw(*Messege);
+    }
+
+    if (enemies_.size() > asteroids_.size())
+        return enemies_.size();
+    else {
+        return asteroids_.size();
+    }
 }
 
 void Level::move_player(float x, float y) {
@@ -208,12 +271,14 @@ void Level::move_player(float x, float y) {
 }
 
 void Level::create_player_bullet() {
-    std::vector<PlayerProjectile*> buff = player_->getBullet();
-    for (auto it = buff.begin(); it != buff.end();it++) {
-        player_shots_.emplace_back((*it));
-        actors_.emplace_back((*it));  
+    if (player_->exist()) {
+        std::vector<PlayerProjectile*> buff = player_->getBullet();
+        for (auto it = buff.begin(); it != buff.end(); it++) {
+            player_shots_.emplace_back((*it));
+            actors_.emplace_back((*it));
+        }
+        buff.erase(buff.begin(), buff.end());
     }
-    buff.erase(buff.begin(), buff.end());
 }
 
 void Level::create_enemy_bullet() {
@@ -230,32 +295,36 @@ void Level::create_enemy_bullet() {
 }
 
 void Level::attack_player() { 
-    if (enemies_.size()>1) {
-        int random = rand() % enemies_.size();
-        enemies_[random]->change_velocity(Direction::Mid);
+    if (player_->exist()) {
+        if (enemies_.size() > 1) {
+            int random = rand() % enemies_.size();
+            enemies_[random]->change_velocity(Direction::Mid);
+        }
     }
 }
 
 void Level::create_bonus(Enemy* &enemy) {
-    if (rand() % 5 == 0) {
-        int random = rand() % 3;
-        if (random % 3 == 0) {
-            PowerUp* buff = new PowerUpMultishot("ball_bonus.png", 1, sf::IntRect(0, 0, 25, 25), enemy->getPosition().x, enemy->getPosition().y, false);
-            power_ups_.emplace_back(buff);
-            /*actors_.emplace_back(buff);*/
-            //delete buff;
-        }
-        else if(random%3==1){
-            PowerUp* buff = new PowerUpDmg("ball_bonus.png", 1, sf::IntRect(0, 0, 25, 25), enemy->getPosition().x, enemy->getPosition().y, false);
-            power_ups_.emplace_back(buff);
-            /*actors_.emplace_back(buff);*/
-            //delete buff;
-        }
-        else{
-            PowerUp* buff = new PowerUpHealth("ball_bonus.png", 1, sf::IntRect(0, 0, 25, 25), enemy->getPosition().x, enemy->getPosition().y, false);
-            power_ups_.emplace_back(buff);
-            /*actors_.emplace_back(buff);*/
-            //delete buff;
+    if (player_->exist()) {
+        if (rand() % 5 == 0) {
+            int random = rand() % 3;
+            if (random % 3 == 0) {
+                PowerUp* buff = new PowerUpMultishot("Textures/ball_bonus.png", 1, sf::IntRect(0, 0, 25, 25), enemy->getPosition().x, enemy->getPosition().y, false);
+                power_ups_.emplace_back(buff);
+                /*actors_.emplace_back(buff);*/
+                //delete buff;
+            }
+            else if (random % 3 == 1) {
+                PowerUp* buff = new PowerUpDmg("Textures/ball_bonus.png", 1, sf::IntRect(0, 0, 25, 25), enemy->getPosition().x, enemy->getPosition().y, false);
+                power_ups_.emplace_back(buff);
+                /*actors_.emplace_back(buff);*/
+                //delete buff;
+            }
+            else {
+                PowerUp* buff = new PowerUpHealth("Textures/ball_bonus.png", 1, sf::IntRect(0, 0, 25, 25), enemy->getPosition().x, enemy->getPosition().y, false);
+                power_ups_.emplace_back(buff);
+                /*actors_.emplace_back(buff);*/
+                //delete buff;
+            }
         }
     }
 }

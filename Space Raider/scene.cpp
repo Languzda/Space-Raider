@@ -58,6 +58,7 @@ void Scene::window_loop(Level* lvl) {
         for (int i = 1; i < 4; i++) {
             this->set_level(lvl, i);
             do {
+                
                 sf::Time time_elapsed = clock.restart();
                 while (window_.pollEvent(event)) { //
                     events(event, time_elapsed, clock_shot);
@@ -75,9 +76,10 @@ void Scene::window_loop(Level* lvl) {
                         level_->attack_player();
                     }
                 }
-                /*if (!window_.isOpen()) break;*/
+                if (!window_.isOpen()) break;
             }while (draw() != 0);
-        }/*if (!window_.isOpen()) break;*/
+        }if (!window_.isOpen()) break;
         window_.close();
     }
 }
+

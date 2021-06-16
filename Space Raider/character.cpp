@@ -8,6 +8,7 @@ Actor::Actor(std::string texture_path, float scale, sf::IntRect rect, int x, int
         this->setTextureRect(rect);
         texture_.setRepeated(is_Repeated);
         this->setPosition(x, y);
+        this->setOrigin(this->getGlobalBounds().width / 2, this->getGlobalBounds().height / 2);
     }
     else {
         std::cout << "blad tekstury" << std::endl;
@@ -34,7 +35,7 @@ void Character::change_direction_texture(Direction direction) {
 Asteroid::Asteroid(std::string texture_path, float scale, sf::IntRect rect, int x, int y, bool is_Repeated) :
     Actor(texture_path, scale, rect, x, y, is_Repeated)
 {
-    this->velocity_x_ = rand() % 170 + 100;
+    this->velocity_x_ = rand() % 100 + 20;
     if (rand() % 2 == 0) this->velocity_x_ = -velocity_x_;
     this->velocity_y_ = rand() % 170 + 100;
 }
@@ -43,7 +44,7 @@ bool Asteroid::remake() {
     if (this->life_span_ == 1) return true;
     else {
         this->life_span_--;
-        this->velocity_x_ = rand() % 170 + 100;
+        this->velocity_x_ = rand() % 100 + 25;
         if (rand() % 2 == 0) this->velocity_x_ = -velocity_x_;
         this->velocity_y_ = rand() % 170 + 100;
         this->setPosition(rand() % 700 + 20, 20);
@@ -51,8 +52,9 @@ bool Asteroid::remake() {
     }
 }
 
-void Asteroid::move_asteroid(const sf::Time& elapsed) {
-    this->move(this->velocity_x_ * elapsed.asSeconds(), this->velocity_y_ * elapsed.asSeconds());
+void Asteroid::move_asteroid() {
+    this->move(velocity_x_ * 1.f / 30, velocity_y_ * 1.f / 30);
+    this->rotate(20*1.f/30);
 }
 
 Asteroid::~Asteroid()

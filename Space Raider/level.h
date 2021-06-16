@@ -11,8 +11,7 @@ class Level
 public:
     Level();
     void generate(const sf::RenderWindow* window, int lvl_nr);
-    void check_colision();
-    void update_actors();
+   
     int draw(sf::RenderWindow* window);
     ~Level();
     void move_player(float x, float y);
@@ -21,6 +20,8 @@ public:
     void attack_player();
 
 private:
+    void check_colision();
+    void update_actors();
     std::vector<Actor*> actors_;
     std::vector<Enemy*> enemies_;
     std::vector<Asteroid *> asteroids_;
@@ -29,11 +30,15 @@ private:
     std::vector<EnemyProjectile *> enemy_shots_;
     Hero* player_;
     std::vector<Score*> scoreboads_;
-    int enemy_counter;
+   // int enemy_counter;
     void reload_actors();
     void create_bonus(Enemy* &enemy);
     sf::Vector2f window_size_;
     void clear_actors();
+    std::vector<sf::Sprite> scene_plain;
+    sf::Texture scene_texture;
+    void Game_Over();
+    Score* Messege;
 };
 
 

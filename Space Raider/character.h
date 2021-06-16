@@ -39,7 +39,7 @@ public:
 	Asteroid(std::string texture_path, float scale, sf::IntRect rect, int x, int y, bool is_Repeated);
 	~Asteroid();
     bool remake();
-    void move_asteroid(const sf::Time& elapsed);
+    void move_asteroid();
 
 private:
     int life_span_ = 3;

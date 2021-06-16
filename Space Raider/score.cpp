@@ -11,6 +11,16 @@ Score::Score(std::string font_path,sf::Vector2f position,sf::Color color, int va
     }
 }
 
+Score::Score(std::string font_path, sf::Vector2f position, sf::Color color, std::string text)
+{
+    if (font.loadFromFile(font_path)) {
+        this->setFont(font);
+        this->setFillColor(color);
+        this->setString(text);
+        this->setPosition(position);
+    }
+}
+
 void Score::update_score(const int &points) {
     this->value += points;
     this->valueSTR = std::to_string(value);

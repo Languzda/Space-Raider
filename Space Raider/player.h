@@ -15,9 +15,12 @@ public:
     std::vector<PlayerProjectile*> getBullet();
     void set_velocity(const float& x);
     float get_velocity();
+    void exist(bool destroy);
+    bool exist();
 private:
     int power_ = 2;
     bool bounce = false;
     float velocity_x_;
+    bool existing_flag = true;
 
 };

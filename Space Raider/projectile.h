@@ -20,7 +20,7 @@ class PlayerProjectile : public Projectile //obiekt pocisk
 {
 public:
     PlayerProjectile(std::string texture_path, float scale, sf::IntRect rect, int x, int y, bool is_Repeated, int veX, int veY, int dmg, bool bounce);
-    ~PlayerProjectile() {};
+    ~PlayerProjectile();
     
 private:
     
