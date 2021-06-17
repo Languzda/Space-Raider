@@ -5,7 +5,7 @@ Hero::Hero(std::string texture_path, float scale, sf::IntRect rect, //konstrukto
     this->setTextureRect(sf::IntRect(155, 0, 155, 380));
     for (int i = 1; i < 4; i++) animationFrame_.emplace_back(sf::IntRect(155 * (i - 1), 0, 155, 380));
     this->velocity_x_ = 0;
-    this->multishot_ = 6;
+    this->multishot_ = 2;
 }
 
 Hero::~Hero() {}

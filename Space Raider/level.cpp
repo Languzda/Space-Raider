@@ -38,7 +38,7 @@ void Level::generate(const sf::RenderWindow* window, int lvl_nr) {
     if (lvl_nr == 2) {
         clear_actors();
 
-        for (int i = 0; i < 7; i++) {
+        for (int i = 0; i < 10; i++) {
             asteroids_.emplace_back(new Asteroid("Textures/asteroid.png", 0.2, sf::IntRect(0, 0, 320, 320), rand() % 700, 20, false));
             actors_.emplace_back(asteroids_[asteroids_.size() - 1]);
         }
@@ -111,13 +111,15 @@ void Level::check_colision() {
             reload_actors();
             break;
         }
-        if (player_->getGlobalBounds().intersects((*it)->getGlobalBounds())) {
-            player_->setHP(player_->getHP() - (*it)->getDmg());
-            delete* it;
-            it = enemy_shots_.erase(it);
-            scoreboads_[1]->update(player_->getHP());
-            reload_actors();
-            break;
+        if (player_->exist()) {
+            if (player_->getGlobalBounds().intersects((*it)->getGlobalBounds())) {
+                player_->setHP(player_->getHP() - (*it)->getDmg());
+                delete* it;
+                it = enemy_shots_.erase(it);
+                scoreboads_[1]->update(player_->getHP());
+                reload_actors();
+                break;
+            }
         }
         it++;
     }

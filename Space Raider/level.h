@@ -5,6 +5,7 @@
 #include "enemy.h"
 #include "projectile.h"
 #include "powerUp.h"
+#include "asteroid.h"
 
 class Level
 {
