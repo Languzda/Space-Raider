@@ -298,15 +298,15 @@ void Level::create_bonus(Enemy* &enemy) {
         if (rand() % 5 == 0) {
             int random = rand() % 3;
             if (random % 3 == 0) {
-                PowerUp* buff = new PowerUpMultishot("Textures/ball_bonus.png", 1, sf::IntRect(0, 0, 25, 25), enemy->getPosition().x, enemy->getPosition().y, false);
+                PowerUp* buff = new PowerUpMultishot("Textures/MultiShot.png", 0.05, sf::IntRect(0, 0, 530, 570), enemy->getPosition().x, enemy->getPosition().y, false);
                 power_ups_.emplace_back(buff);
             }
             else if (random % 3 == 1) {
-                PowerUp* buff = new PowerUpDmg("Textures/ball_bonus.png", 1, sf::IntRect(0, 0, 25, 25), enemy->getPosition().x, enemy->getPosition().y, false);
+                PowerUp* buff = new PowerUpDmg("Textures/DmgUp.png", 0.05, sf::IntRect(0, 0, 530, 570), enemy->getPosition().x, enemy->getPosition().y, false);
                 power_ups_.emplace_back(buff);
             }
             else {
-                PowerUp* buff = new PowerUpHealth("Textures/ball_bonus.png", 1, sf::IntRect(0, 0, 25, 25), enemy->getPosition().x, enemy->getPosition().y, false);
+                PowerUp* buff = new PowerUpHealth("Textures/BonusLife.png", 0.04, sf::IntRect(0, 0, 920, 901), enemy->getPosition().x, enemy->getPosition().y, false);
                 power_ups_.emplace_back(buff);
             }
         }

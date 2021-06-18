@@ -35,7 +35,7 @@ std::vector<PlayerProjectile*> Hero::getBullet() { //tworzenie pociskow
     int znak;
     for (int i = 0; i < multishot_; i++) {
         if (i % 2 == 0) { znak = -1; } else{  znak = 1;}
-        buff_vector.emplace_back(new PlayerProjectile("Textures/transbal.png", 0.05, sf::IntRect(0, 0, 530, 570) /*sf::IntRect(0, 0, 25, 25)*/,
+        buff_vector.emplace_back(new PlayerProjectile("Textures/transbal.png", 0.05, sf::IntRect(0, 0, 530, 570) ,
             this->getPosition().x - this->getGlobalBounds().width / 2 +20, this->getPosition().y,
             false,(i*40)%200*znak, -350, this->power_, true));
     }
