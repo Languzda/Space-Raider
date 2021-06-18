@@ -9,10 +9,6 @@
 //#include "character.h"
 #include <time.h>
 
-
-
-using namespace std;
-
 int main()
 {
     Scene scene(800, 800);

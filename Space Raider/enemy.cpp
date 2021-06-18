@@ -17,7 +17,7 @@ Enemy::Enemy(std::string texture_path, float scale, sf::IntRect rect, //konstruk
     this->multishot_ = multishot;
 }
 
-void Enemy::move_e() { //poruszanie przeciwników strzela¹cych
+void Enemy::moveA() { //poruszanie przeciwników strzela¹cych
     if (velocity_y > 0) {
         this->change_direction_texture(Direction::Mid);
     }

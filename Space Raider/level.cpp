@@ -74,6 +74,9 @@ void Level::clear_actors() {
 void Level::check_colision() {
     bool exit = false;
 
+    if (player_->getGlobalBounds().left < 0) player_->setPosition(window_size_.x - player_->getGlobalBounds().width, player_->getPosition().y);
+    if (player_->getGlobalBounds().left + player_->getGlobalBounds().width > window_size_.x) player_->setPosition(player_->getGlobalBounds().width, player_->getPosition().y);
+
     //sprawdzenie kolizji przeciwników
     for (auto it = enemies_.begin(); it != enemies_.end();) {
         if ((*it)->getGlobalBounds().left <= 0) { for (auto& ell : enemies_) { ell->change_velocity(Direction::Right); ell->change_direction_texture(Direction::Right); } break; }
@@ -190,36 +193,21 @@ void Level::reload_actors() {
     for (auto& a : asteroids_) {
         actors_.emplace_back(a);
     }
-    //for (auto& b : power_ups_) {
-    //    actors_.emplace_back();
-    //}
     
 } //erase actors vector, then emplace back all actors back
 
 void Level::update_actors() {
     check_colision();
-    if (player_->exist()) {
-        player_->move(player_->get_velocity(), 0);
-    }
     scoreboads_[1]->update(player_->getHP());
-    if (player_->getGlobalBounds().left < 0) player_->setPosition(window_size_.x-player_->getGlobalBounds().width , player_->getPosition().y);
-    if (player_->getGlobalBounds().left +player_->getGlobalBounds().width> window_size_.x) player_->setPosition(0 , player_->getPosition().y);
-    for (auto& bullet : player_shots_) {
-       
-        bullet->move_bullet();
+
+    for (auto& actor : actors_) {
+        actor->moveA();
     }
-    for (auto& bullet : enemy_shots_) {
-        bullet->move_bullet();
-    }
-    for (auto& enemy : enemies_) {
-        enemy->move_e();
-    }
+    
     for (auto& bonus : power_ups_) {
-        bonus->move_b();
+        bonus->moveA();
     }
-    for (auto& asteroid : asteroids_) {
-        asteroid->move_asteroid();
-    }
+
     for (auto& plain : scene_plain) {
         if (plain.getGlobalBounds().top >= window_size_.y-2) plain.setPosition(0, -window_size_.y);
         plain.move(0, 90 * 1.f / 30);
@@ -312,20 +300,14 @@ void Level::create_bonus(Enemy* &enemy) {
             if (random % 3 == 0) {
                 PowerUp* buff = new PowerUpMultishot("Textures/ball_bonus.png", 1, sf::IntRect(0, 0, 25, 25), enemy->getPosition().x, enemy->getPosition().y, false);
                 power_ups_.emplace_back(buff);
-                /*actors_.emplace_back(buff);*/
-                //delete buff;
             }
             else if (random % 3 == 1) {
                 PowerUp* buff = new PowerUpDmg("Textures/ball_bonus.png", 1, sf::IntRect(0, 0, 25, 25), enemy->getPosition().x, enemy->getPosition().y, false);
                 power_ups_.emplace_back(buff);
-                /*actors_.emplace_back(buff);*/
-                //delete buff;
             }
             else {
                 PowerUp* buff = new PowerUpHealth("Textures/ball_bonus.png", 1, sf::IntRect(0, 0, 25, 25), enemy->getPosition().x, enemy->getPosition().y, false);
                 power_ups_.emplace_back(buff);
-                /*actors_.emplace_back(buff);*/
-                //delete buff;
             }
         }
     }

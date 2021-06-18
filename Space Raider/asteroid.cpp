@@ -20,7 +20,7 @@ bool Asteroid::remake() {
     }
 }
 
-void Asteroid::move_asteroid() {
+void Asteroid::moveA() {
     this->move(velocity_x_ * 1.f / 30, velocity_y_ * 1.f / 30);
     this->rotate(20 * 1.f / 30);
 }

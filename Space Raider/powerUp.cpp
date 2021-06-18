@@ -8,7 +8,7 @@ PowerUpDmg::PowerUpDmg(std::string texture_path, float scale, sf::IntRect rect, 
 	PowerUp(texture_path, scale, rect, x, y, is_Repeated) {}
 
 
-void PowerUp::move_b() {
+void PowerUp::moveA() {
 	this->move(0, 50 * 1.f / 30);
 }
 

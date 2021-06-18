@@ -6,14 +6,14 @@ class Projectile : public Actor
 public:
     Projectile(std::string texture_path, float scale, sf::IntRect rect, int x, int y, bool is_Repeated, int veX, int veY, int dmg, bool bounce);
 	~Projectile();
-    void move_bullet(/*sf::Time elapsed*/);
-    int getDmg();
+    void moveA(); //porsuzanie siê obiektu
+    int getDmg(); //geter iloœci obra¿eñ pocisku
     bool is_bouncy();
 protected:
     bool bounce_;
-    int velocity_x;
-    int velocity_y;
-    int projectile_dmg_;
+    int velocity_x; //wektor poruszania siê obeiktu (OX)
+    int velocity_y; //wektor poruszania siê obeiktu (OY)
+    int projectile_dmg_; //ilosc obra¿eñ pocisku
 };
 
 class PlayerProjectile : public Projectile //obiekt pocisk

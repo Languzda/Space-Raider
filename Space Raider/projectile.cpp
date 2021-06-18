@@ -12,7 +12,7 @@ Projectile::~Projectile()
 }
 
 
-void Projectile::move_bullet() { //poruszanie pocisku po planszy
+void Projectile::moveA() { //poruszanie pocisku po planszy
     this->move(velocity_x * 1.f / 30, velocity_y * 1.f / 30);
     this->rotate(80 * 1.f / 30);
 }

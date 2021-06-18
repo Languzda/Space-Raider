@@ -26,6 +26,10 @@ void Hero::setMultishot() { //wzomonienie ilosci wystrzeliwanych pociskow
     this->multishot_++;
 }
 
+void Hero::moveA() {
+    this->move(velocity_x_, 0);
+}
+
 std::vector<PlayerProjectile*> Hero::getBullet() { //tworzenie pociskow
     std::vector<PlayerProjectile*> buff_vector;
     int znak;
