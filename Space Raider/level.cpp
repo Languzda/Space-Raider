@@ -11,6 +11,9 @@ Level::~Level() {
     for (auto& actor : actors_) {
         delete actor;
     }
+    for (auto& score : scoreboads_) {
+        delete score;
+    }
 }
 
 void Level::generate(const sf::RenderWindow* window, int lvl_nr) {
@@ -19,11 +22,11 @@ void Level::generate(const sf::RenderWindow* window, int lvl_nr) {
     scene_texture.loadFromFile("Textures/PlainCosmos2.png");
     for (int i = 0; i < 2; i++) {
         scene_plain.emplace_back(sf::Sprite(scene_texture));
-        scene_plain[scene_plain.size() - 1].setPosition(0, -798 * i);
+        scene_plain[scene_plain.size() - 1].setPosition(0, -(window_size_.y * i));
     }
 
     if (lvl_nr == 1) {
-        player_ = new Hero("Textures/spaceShip.png", 0.4, sf::IntRect(0, 0, 465, 380), window->getSize().x / 2, window->getSize().y - 150, false, 4);
+        player_ = new Hero("Textures/spaceShip.png", 0.4, sf::IntRect(0, 0, 465, 380), window->getSize().x / 2, window->getSize().y - 150, false, 3);
         actors_.emplace_back(player_);
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 6; i++) {
@@ -32,42 +35,33 @@ void Level::generate(const sf::RenderWindow* window, int lvl_nr) {
             }
         }
   
-        scoreboads_.emplace_back(new Score("ad_mono.ttf", sf::Vector2f(700, 50), sf::Color::White, 0));
+        scoreboads_.emplace_back(new Score("ad_mono.ttf", sf::Vector2f(700, 50), sf::Color::White, 0000));
         scoreboads_.emplace_back(new Score("ad_mono.ttf", sf::Vector2f(50, 50), sf::Color::Red, player_->getHP()));
     }
     if (lvl_nr == 2) {
         clear_actors();
-
+        scoreboads_[0]->update_score(100);
         for (int i = 0; i < 10; i++) {
-            asteroids_.emplace_back(new Asteroid("Textures/asteroid.png", 0.2, sf::IntRect(0, 0, 320, 320), rand() % 700, 20, false));
+            asteroids_.emplace_back(new Asteroid("Textures/asteroid.png", 0.2, sf::IntRect(0, 0, 320, 320), rand() % 700, -20, false));
             actors_.emplace_back(asteroids_[asteroids_.size() - 1]);
         }
     }
     if (lvl_nr == 3) {
-        Enemy* chicken;
         clear_actors();
-        chicken = new  Enemy("Textures/enemy.png", 0.5, sf::IntRect(0, 0, 600, 1300), window->getSize().x / 2, 100, false, 20, -75,4);
-        enemies_.emplace_back(chicken);
-        actors_.emplace_back(chicken);
+        scoreboads_[0]->update_score(100);
+        enemies_.emplace_back(new  Enemy("Textures/enemy.png", 0.4, sf::IntRect(0, 0, 590, 1180), window->getSize().x / 2, 100, false, 20, -75, 3));
+        actors_.emplace_back(enemies_[enemies_.size()-1]);
 
     }
 }
 
 void Level::clear_actors() {
+    for (auto it = enemy_shots_.begin(); it != enemy_shots_.end(); ) { delete* it; it++; }
     enemy_shots_.erase(enemy_shots_.begin(), enemy_shots_.end());
-    player_shots_.erase(player_shots_.begin(), player_shots_.end());
 
-     /* for (auto it = enemy_shots_.begin(); it != enemy_shots_.end(); ) { delete* it; it = enemy_shots_.erase(it); it++; }
-    for (auto it = player_shots_.begin(); it != player_shots_.end(); ) { delete* it; it = player_shots_.erase(it); it++; }*/
-    /*for (auto it = actors_.begin() + 1; it != actors_.end(); ) {
-        delete* it;
-        it = actors_.erase(it);
-        it++;
-    }*/
-    
-     //for (auto& b : player_shots_) { delete b; }
-     //enemy_shots_.erase(enemy_shots_.begin(), enemy_shots_.end());
-     //player_shots_.erase(player_shots_.begin(), player_shots_.end());
+    /*for (auto it = player_shots_.begin(); it != player_shots_.end(); ) { delete* it; it++; }
+    player_shots_.erase(player_shots_.begin(), player_shots_.end());*/
+
     reload_actors();
 }
 
@@ -79,16 +73,41 @@ void Level::check_colision() {
 
     //sprawdzenie kolizji przeciwników
     for (auto it = enemies_.begin(); it != enemies_.end();) {
-        if ((*it)->getGlobalBounds().left <= 0) { for (auto& ell : enemies_) { ell->change_velocity(Direction::Right); ell->change_direction_texture(Direction::Right); } break; }
+        if ((*it)->getGlobalBounds().left <= 0) {
+            for (auto& ell : enemies_) {
+                ell->change_velocity(Direction::Right); 
+                ell->change_direction_texture(Direction::Right); 
+            }
+            break; 
+        }
         if ((*it)->getGlobalBounds().left + (*it)->getGlobalBounds().width > 800) 
-        { for (auto& ell : enemies_) { ell->change_velocity(Direction::Left); ell->change_direction_texture(Direction::Left);} break; }
-        if ((*it)->getGlobalBounds().top + (*it)->getGlobalBounds().height > 800) { delete* it; it = enemies_.erase(it); reload_actors(); break; }
-        if (player_->exist()) { if ((*it)->getGlobalBounds().intersects(player_->getGlobalBounds())) { delete* it; it = enemies_.erase(it); player_->setHP(player_->getHP() - 1);  reload_actors(); break; } }
+        { 
+            for (auto& ell : enemies_) { 
+                ell->change_velocity(Direction::Left); 
+                ell->change_direction_texture(Direction::Left);
+            } 
+            break; 
+        }
+        if ((*it)->getGlobalBounds().top + (*it)->getGlobalBounds().height > 800) { 
+            delete* it; 
+            it = enemies_.erase(it); 
+            reload_actors(); 
+            break; 
+        }
+        if (player_->exist()) {
+            if ((*it)->getGlobalBounds().intersects(player_->getGlobalBounds())) {
+                delete* it;
+                it = enemies_.erase(it); 
+                player_->setHP(player_->getHP() - 1);  
+                reload_actors(); 
+                break; 
+            } 
+        }
         it++;
     }
-
+    //sprawdzanie kolizji asteroid
     for (auto it = asteroids_.begin(); it != asteroids_.end(); it++) {
-        if (((*it)->getGlobalBounds().left <= 0) or ((*it)->getGlobalBounds().left + (*it)->getGlobalBounds().width > 800) or ((*it)->getGlobalBounds().top + (*it)->getGlobalBounds().height > 800)) {
+        if (((*it)->getGlobalBounds().left <= -(*it)->getGlobalBounds().width+2) or ((*it)->getGlobalBounds().left> window_size_.x) or ((*it)->getGlobalBounds().top > window_size_.y)) {
             if ((*it)->remake()) {
                 delete* it;
                 it = asteroids_.erase(it);
@@ -96,17 +115,34 @@ void Level::check_colision() {
                 break;
             }
         }
-        if (player_->exist()) {
-            if ((*it)->getGlobalBounds().intersects(player_->getGlobalBounds())) { delete* it; it = asteroids_.erase(it); player_->setHP(player_->getHP() - 1);  reload_actors(); break; }
+        if (player_->exist()) { //jesl gracz istnieje sprawdŸ kolizje z graczem
+            if ((*it)->getGlobalBounds().intersects(player_->getGlobalBounds())) { 
+                delete* it; 
+                it = asteroids_.erase(it); 
+                player_->setHP(player_->getHP() - 1); 
+                reload_actors(); 
+                break; 
+            }
         }
     }
-
+    //sprawdzenie kolizji powerUpów
     for (auto it = power_ups_.begin(); it != power_ups_.end();) {
-        if ((*it)->getGlobalBounds().top + (*it)->getGlobalBounds().height > 800) { delete* it; it = power_ups_.erase(it); reload_actors(); break; }
-        if ((*it)->getGlobalBounds().intersects(player_->getGlobalBounds())) { (*it)->power_up(player_); delete* it; it = power_ups_.erase(it);   /*reload_actors();*/ break; }
+        if ((*it)->getGlobalBounds().top + (*it)->getGlobalBounds().height > 800) { 
+            delete* it; 
+            it = power_ups_.erase(it); 
+            reload_actors(); 
+            break; 
+        }
+        if ((*it)->getGlobalBounds().intersects(player_->getGlobalBounds())) { 
+            (*it)->power_up(player_); 
+            delete* it; 
+            it = power_ups_.erase(it);   
+            reload_actors();
+            break; 
+        }
         it++;
     }
-    
+    //sprawdzenie kolizji pocisków przeciwników
     for (auto it = enemy_shots_.begin(); it != enemy_shots_.end();) {
         if ((*it)->getGlobalBounds().top + (*it)->getGlobalBounds().height >= 800) {
             delete* it;
@@ -126,7 +162,7 @@ void Level::check_colision() {
         }
         it++;
     }
-
+    //sprawdzanie kolizji pocisków gracza
     for (auto it = player_shots_.begin(); it != player_shots_.end();) { //check that bullet is out of window
         sf::FloatRect bullet_bounds = (*it)->getGlobalBounds();
         if (bullet_bounds.top <= 0) {
@@ -140,13 +176,11 @@ void Level::check_colision() {
                 if ((*itt)->getHP() <= player_->getPower()) {
                     create_bonus(*itt);
                     delete* itt;
-
                     itt = enemies_.erase(itt);
                     delete* it;
                     it = player_shots_.erase(it);
                     reload_actors();
                     it++;
-                    //enemy_counter--;
                     scoreboads_[0]->update_score(10);
                     exit = true;
                     break;
@@ -177,19 +211,21 @@ void Level::check_colision() {
 
 void Level::reload_actors() {
     actors_.erase(actors_.begin(), actors_.end());
-    if (player_ ->exist()) {
-        actors_.emplace_back(player_);
-    }
     for (auto& b : player_shots_) {
         actors_.emplace_back(b);
+    }
+    if (player_ ->exist()) {
+        actors_.emplace_back(player_);
     }
     for (auto& eb : enemy_shots_) {
         actors_.emplace_back(eb);
     }
+    for (auto& powerUp : power_ups_) {
+        actors_.emplace_back(powerUp);
+    }
     for (auto& e : enemies_) {
         actors_.emplace_back(e);
     }
- 
     for (auto& a : asteroids_) {
         actors_.emplace_back(a);
     }
@@ -203,13 +239,8 @@ void Level::update_actors() {
     for (auto& actor : actors_) {
         actor->moveA();
     }
-    
-    for (auto& bonus : power_ups_) {
-        bonus->moveA();
-    }
-
     for (auto& plain : scene_plain) {
-        if (plain.getGlobalBounds().top >= window_size_.y-2) plain.setPosition(0, -window_size_.y);
+        if (plain.getGlobalBounds().top >= window_size_.y) plain.setPosition(0, -window_size_.y);
         plain.move(0, 90 * 1.f / 30);
     }
 
@@ -235,12 +266,6 @@ int Level::draw(sf::RenderWindow* window) {
     {
         window->draw(*score);
     }
-    for (auto& b : power_ups_) {
-        window->draw(*b);
-    }
-    //if (player_->getHP() <= 0) {
-    //    return -1;
-    //}
 
     if (!player_->exist()) {
         window->draw(*Messege);
@@ -262,24 +287,15 @@ void Level::move_player(float x, float y) {
 
 void Level::create_player_bullet() {
     if (player_->exist()) {
-        std::vector<PlayerProjectile*> buff = player_->getBullet();
-        for (auto it = buff.begin(); it != buff.end(); it++) {
-            player_shots_.emplace_back((*it));
-            actors_.emplace_back((*it));
-        }
-        buff.erase(buff.begin(), buff.end());
+        player_->getBullet(player_shots_);
+        reload_actors();
     }
 }
 
 void Level::create_enemy_bullet() {
     if (!enemies_.empty()) {
         int random = rand() % enemies_.size();
-        std::vector<EnemyProjectile*> buff = enemies_[random]->getBullet();
-        for (auto it = buff.begin(); it != buff.end(); it++) {
-            enemy_shots_.emplace_back((*it));
-            actors_.emplace_back((*it));
-        }
-        buff.erase(buff.begin(), buff.end());
+        enemies_[random]->getBullet(enemy_shots_);
         reload_actors();
     }
 }
@@ -298,17 +314,15 @@ void Level::create_bonus(Enemy* &enemy) {
         if (rand() % 5 == 0) {
             int random = rand() % 3;
             if (random % 3 == 0) {
-                PowerUp* buff = new PowerUpMultishot("Textures/MultiShot.png", 0.05, sf::IntRect(0, 0, 530, 570), enemy->getPosition().x, enemy->getPosition().y, false);
-                power_ups_.emplace_back(buff);
+                power_ups_.emplace_back(new PowerUpMultishot("Textures/MultiShot.png", 0.9, sf::IntRect(0, 0, 50, 50), enemy->getPosition().x, enemy->getPosition().y, false));
             }
             else if (random % 3 == 1) {
-                PowerUp* buff = new PowerUpDmg("Textures/DmgUp.png", 0.05, sf::IntRect(0, 0, 530, 570), enemy->getPosition().x, enemy->getPosition().y, false);
-                power_ups_.emplace_back(buff);
+                power_ups_.emplace_back(new PowerUpDmg("Textures/DmgUp.png", 1, sf::IntRect(0, 0, 40, 25), enemy->getPosition().x, enemy->getPosition().y, false));
             }
             else {
-                PowerUp* buff = new PowerUpHealth("Textures/BonusLife.png", 0.04, sf::IntRect(0, 0, 920, 901), enemy->getPosition().x, enemy->getPosition().y, false);
-                power_ups_.emplace_back(buff);
+                power_ups_.emplace_back(new PowerUpHealth("Textures/BonusLife.png", 0.04, sf::IntRect(0, 0, 920, 901), enemy->getPosition().x, enemy->getPosition().y, false));
             }
+            reload_actors();
         }
     }
 }

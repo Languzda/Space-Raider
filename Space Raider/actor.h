@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <memory>
 
 class Actor : public sf::Sprite //klasa abstrakcyjna wszystkich animowanych obiektów
 {

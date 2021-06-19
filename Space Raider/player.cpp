@@ -5,7 +5,7 @@ Hero::Hero(std::string texture_path, float scale, sf::IntRect rect, //konstrukto
     this->setTextureRect(sf::IntRect(155, 0, 155, 380));
     for (int i = 1; i < 4; i++) animationFrame_.emplace_back(sf::IntRect(155 * (i - 1), 0, 155, 380));
     this->velocity_x_ = 0;
-    this->multishot_ = 2;
+    this->multishot_ = 1;
 }
 
 Hero::~Hero() {}
@@ -30,17 +30,14 @@ void Hero::moveA() {
     this->move(velocity_x_, 0);
 }
 
-std::vector<PlayerProjectile*> Hero::getBullet() { //tworzenie pociskow
-    std::vector<PlayerProjectile*> buff_vector;
+void Hero::getBullet(std::vector<PlayerProjectile*> &buff_vector) { //tworzenie pociskow
     int znak;
     for (int i = 0; i < multishot_; i++) {
         if (i % 2 == 0) { znak = -1; } else{  znak = 1;}
         buff_vector.emplace_back(new PlayerProjectile("Textures/transbal.png", 0.05, sf::IntRect(0, 0, 530, 570) ,
-            this->getPosition().x - this->getGlobalBounds().width / 2 +20, this->getPosition().y,
+            this->getGlobalBounds().left + (this->getGlobalBounds().width / 2 )-10, this->getPosition().y,
             false,(i*40)%200*znak, -350, this->power_, true));
     }
-
-    return buff_vector;
 }
 
 bool Hero::exist() { //zwrocenie flagi istnienia

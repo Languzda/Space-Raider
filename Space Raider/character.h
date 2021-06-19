@@ -3,6 +3,7 @@
 #define CHARACTER_H
 
 #include "actor.h"
+#include "projectile.h"
 
 enum class Direction { Left, Right, Mid };
 

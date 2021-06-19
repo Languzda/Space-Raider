@@ -1,6 +1,6 @@
 #pragma once
+
 #include "character.h";
-#include "projectile.h"
 
 class Hero : public Character //klasa postaci sterowanej przez gracza
 {
@@ -13,7 +13,7 @@ public:
     void set_bounce();
     int getPower(); //getter aktualnych obra¿eñ pocisku
     void moveA();//poruszanie siê obiektu
-    std::vector<PlayerProjectile*> getBullet(); //tworzenie pocisków
+    void getBullet(std::vector<PlayerProjectile*>& buff_vector); //tworzenie pocisków
     void set_velocity(const float& x);//setter wektora poruszania
     float get_velocity();//getter wektora poruszania
     void exist(bool destroy); //ustawienie flagi istnienia gracza

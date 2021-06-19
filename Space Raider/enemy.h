@@ -1,7 +1,6 @@
 #pragma once
 
 #include "character.h"
-#include "projectile.h"
 
 class Enemy : public Character //klasa przeciwnika
 {
@@ -13,7 +12,7 @@ public:
     ~Enemy() {};
     void moveA(); //poruszanie siê obiekty
     void change_velocity(const Direction direction); //zmienia kierunku poruszanie siê obiektu
-    std::vector<EnemyProjectile*> getBullet(); //towrzenie pocisków
+    void getBullet(std::vector<EnemyProjectile*> &buff_vector); //towrzenie pocisków
 private:
     int velocity_x; //wektor poruszania siê(OX)
     int velocity_y = 0;//wektor poruszania siê (OY)

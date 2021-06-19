@@ -13,6 +13,7 @@ private:
     int life_span_ = 3; //czas zycia komety (ilosc powtorzen lotu)
     int velocity_x_ = 50; //wektor poruszania siê (Ox)
     int velocity_y_ = 50;//wektor poruszania siê (Oy)
+    int rotate_ = 1; //okreœla kierunek rotacji
 };
 
 
