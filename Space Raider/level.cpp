@@ -51,7 +51,7 @@ void Level::generate(const sf::RenderWindow* window, int lvl_nr) {
         scoreboads_[0]->update_score(100);
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 7; i++) {
-                enemies_.emplace_back(new  Enemy("Textures/enemy1.png", 1, sf::IntRect(0, 0, 216, 63), 100 * i + 25, window->getSize().y - (400 + 100 * j), false, 3, -75));
+                enemies_.emplace_back(new  Enemy("Textures/enemy1.png", 1, sf::IntRect(0, 0, 216, 63), 100 * i + 25, window->getSize().y - (400 + 100 * j), false, 4, -75));
                 actors_.emplace_back(enemies_[enemies_.size() - 1]);
             }
         }
