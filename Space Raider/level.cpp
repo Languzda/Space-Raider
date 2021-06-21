@@ -342,13 +342,13 @@ void Level::create_bonus(Enemy* &enemy) {
         if (rand() % 5 == 0) {
             int random = rand() % 3;
             if (random % 3 == 0) {
-                power_ups_.emplace_back(new PowerUpMultishot("Textures/MultiShot.png", 0.9, sf::IntRect(0, 0, 50, 50), enemy->getPosition().x, enemy->getPosition().y, false));
+                power_ups_.emplace_back(new PowerUpMultishot("Textures/MultiShot.png", 0.9, sf::IntRect(0, 0, 50, 50), enemy->getPosition().x-enemy->getGlobalBounds().width/2, enemy->getPosition().y, false));
             }
             else if (random % 3 == 1) {
-                power_ups_.emplace_back(new PowerUpDmg("Textures/DmgUp.png", 1, sf::IntRect(0, 0, 40, 25), enemy->getPosition().x, enemy->getPosition().y, false));
+                power_ups_.emplace_back(new PowerUpDmg("Textures/DmgUp.png", 1, sf::IntRect(0, 0, 40, 25), enemy->getPosition().x - enemy->getGlobalBounds().width / 2, enemy->getPosition().y, false));
             }
             else {
-                power_ups_.emplace_back(new PowerUpHealth("Textures/BonusLife.png", 0.04, sf::IntRect(0, 0, 920, 901), enemy->getPosition().x, enemy->getPosition().y, false));
+                power_ups_.emplace_back(new PowerUpHealth("Textures/BonusLife.png", 0.04, sf::IntRect(0, 0, 920, 901), enemy->getPosition().x - enemy->getGlobalBounds().width / 2, enemy->getPosition().y, false));
             }
             reload_actors();
         }
