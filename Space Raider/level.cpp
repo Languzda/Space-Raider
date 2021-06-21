@@ -42,7 +42,7 @@ void Level::generate(const sf::RenderWindow* window, int lvl_nr) {
         clear_actors();
         scoreboads_[0]->update_score(100);
         for (int i = 0; i < 10; i++) {
-            asteroids_.emplace_back(new Asteroid("Textures/asteroid.png", 0.2, sf::IntRect(0, 0, 320, 320), rand() % 700, -20, false));
+            asteroids_.emplace_back(new Asteroid("Textures/asteroid.png", 0.2, sf::IntRect(0, 0, 320, 320), rand() % 700, -50, false));
             actors_.emplace_back(asteroids_[asteroids_.size() - 1]);
         }
     }
@@ -60,7 +60,7 @@ void Level::generate(const sf::RenderWindow* window, int lvl_nr) {
         clear_actors();
         scoreboads_[0]->update_score(100);
         for (int i = 0; i < 13; i++) {
-            asteroids_.emplace_back(new Asteroid("Textures/asteroid.png", 0.2, sf::IntRect(0, 0, 320, 320), rand() % 700, -20, false));
+            asteroids_.emplace_back(new Asteroid("Textures/asteroid.png", 0.2, sf::IntRect(0, 0, 320, 320), rand() % 700, -50, false));
             actors_.emplace_back(asteroids_[asteroids_.size() - 1]);
         }
     }
