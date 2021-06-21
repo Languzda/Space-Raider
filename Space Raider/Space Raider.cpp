@@ -6,7 +6,6 @@
 #include <memory>
 
 #include "scene.h"
-//#include "character.h"
 #include <time.h>
 
 int main()
@@ -15,5 +14,4 @@ int main()
     Level lvl;
     srand(time(NULL));
     scene.window_loop(&lvl);
-    std::cout << "Thank" << std::endl;
 }

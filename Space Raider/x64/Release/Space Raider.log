@@ -20,43 +20,46 @@ C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Pro
           ]
 C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(29,149): warning C4305: "argument": obcięcie z "double" do "float"
 C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(45,134): warning C4305: "argument": obcięcie z "double" do "float"
-C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(52,147): warning C4305: "argument": obcięcie z "double" do "float"
-C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(275,31): warning C4267: "return": konwersja z "size_t" do "int", możliwa utrata danych
-C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(277,33): warning C4267: "return": konwersja z "size_t" do "int", możliwa utrata danych
-C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(317,164): warning C4244: "argument": konwersja z "const T" do "int", możliwa utrata danych
+C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(63,134): warning C4305: "argument": obcięcie z "double" do "float"
+C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(70,147): warning C4305: "argument": obcięcie z "double" do "float"
+C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(293,31): warning C4267: "return": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(295,33): warning C4267: "return": konwersja z "size_t" do "int", możliwa utrata danych
+C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(335,164): warning C4244: "argument": konwersja z "const T" do "int", możliwa utrata danych
           with
           [
               T=float
           ]
-C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(317,140): warning C4244: "argument": konwersja z "const T" do "int", możliwa utrata danych
+C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(335,140): warning C4244: "argument": konwersja z "const T" do "int", możliwa utrata danych
           with
           [
               T=float
           ]
-C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(317,174): warning C4305: "argument": obcięcie z "double" do "float"
-C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(320,152): warning C4244: "argument": konwersja z "const T" do "int", możliwa utrata danych
+C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(335,174): warning C4305: "argument": obcięcie z "double" do "float"
+C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(338,152): warning C4244: "argument": konwersja z "const T" do "int", możliwa utrata danych
           with
           [
               T=float
           ]
-C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(320,128): warning C4244: "argument": konwersja z "const T" do "int", możliwa utrata danych
+C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(338,128): warning C4244: "argument": konwersja z "const T" do "int", możliwa utrata danych
           with
           [
               T=float
           ]
-C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(323,164): warning C4244: "argument": konwersja z "const T" do "int", możliwa utrata danych
+C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(341,164): warning C4244: "argument": konwersja z "const T" do "int", możliwa utrata danych
           with
           [
               T=float
           ]
-C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(323,140): warning C4244: "argument": konwersja z "const T" do "int", możliwa utrata danych
+C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(341,140): warning C4244: "argument": konwersja z "const T" do "int", możliwa utrata danych
           with
           [
               T=float
           ]
-C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(323,174): warning C4305: "argument": obcięcie z "double" do "float"
+C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\level.cpp(341,174): warning C4305: "argument": obcięcie z "double" do "float"
+  scene.cpp
+C:\Programowanie\Studia\2 Semestr\Programowanie strukturalne i obiektowe\LAB\Projekt vs\Space Raider\player.h(3,10): warning C4067: nieoczekiwane tokeny występujące po dyrektywie preprocesora - oczekiwano nowego wiersza
   Trwa generowanie kodu
-  16 of 689 functions ( 2.3%) were compiled, the rest were copied from previous compilation.
+  3 of 689 functions ( 0.4%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     3 functions had inline decision re-evaluated but remain unchanged
   Zakończono generowanie kodu

@@ -26,7 +26,7 @@ void Level::generate(const sf::RenderWindow* window, int lvl_nr) {
     }
 
     if (lvl_nr == 1) {
-        player_ = new Hero("Textures/spaceShip.png", 0.4, sf::IntRect(0, 0, 465, 380), window->getSize().x / 2, window->getSize().y - 150, false, 3);
+        player_ = new Hero("Textures/spaceShip.png", 0.4, sf::IntRect(0, 0, 465, 380), window->getSize().x / 2, window->getSize().y - 150, false, 5);
         actors_.emplace_back(player_);
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 6; i++) {
@@ -49,7 +49,25 @@ void Level::generate(const sf::RenderWindow* window, int lvl_nr) {
     if (lvl_nr == 3) {
         clear_actors();
         scoreboads_[0]->update_score(100);
-        enemies_.emplace_back(new  Enemy("Textures/enemy.png", 0.4, sf::IntRect(0, 0, 590, 1180), window->getSize().x / 2, 100, false, 20, -75, 3));
+        for (int j = 0; j < 4; j++) {
+            for (int i = 0; i < 7; i++) {
+                enemies_.emplace_back(new  Enemy("Textures/enemy1.png", 1, sf::IntRect(0, 0, 216, 63), 100 * i + 25, window->getSize().y - (400 + 100 * j), false, 3, -75));
+                actors_.emplace_back(enemies_[enemies_.size() - 1]);
+            }
+        }
+    }
+    if (lvl_nr == 4) {
+        clear_actors();
+        scoreboads_[0]->update_score(100);
+        for (int i = 0; i < 13; i++) {
+            asteroids_.emplace_back(new Asteroid("Textures/asteroid.png", 0.2, sf::IntRect(0, 0, 320, 320), rand() % 700, -20, false));
+            actors_.emplace_back(asteroids_[asteroids_.size() - 1]);
+        }
+    }
+    if (lvl_nr == 5) {
+        clear_actors();
+        scoreboads_[0]->update_score(100);
+        enemies_.emplace_back(new  Enemy("Textures/enemy.png", 0.4, sf::IntRect(0, 0, 590, 1180), window->getSize().x / 2, 100, false, 50, -75, 3));
         actors_.emplace_back(enemies_[enemies_.size()-1]);
 
     }
