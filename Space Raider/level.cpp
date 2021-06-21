@@ -71,6 +71,14 @@ void Level::generate(const sf::RenderWindow* window, int lvl_nr) {
         actors_.emplace_back(enemies_[enemies_.size()-1]);
 
     }
+    if (lvl_nr == 6) {
+        clear_actors();
+        scoreboads_[0]->update_score(300);
+        Messege  = new Score("ad_mono.ttf", sf::Vector2f(window_size_.x / 2 - 100, window_size_.y / 2), sf::Color::White, "\tVictory\npress escape to quit");
+        victory_flag_ = true;
+        Messege->setScale(1.5, 1.5);
+        Messege->setPosition(window_size_.x / 2 - Messege->getGlobalBounds().width / 2, window_size_.y / 2 - Messege->getGlobalBounds().height);
+    }
 }
 
 void Level::clear_actors() {
@@ -264,8 +272,8 @@ void Level::update_actors() {
 
     if (player_->getHP() <= 0 && player_->exist()==true) {
         Messege = new Score("ad_mono.ttf", sf::Vector2f(window_size_.x/2-100, window_size_.y/2), sf::Color::White, "\tYou Lose\npress escape to quit");
-        Messege->setPosition(window_size_.x / 2 - Messege->getGlobalBounds().width, window_size_.y / 2);
-        Messege->setScale(2, 2);
+        Messege->setScale(1.5, 1.5);
+        Messege->setPosition(window_size_.x / 2 - Messege->getGlobalBounds().width/2, window_size_.y / 2- Messege->getGlobalBounds().height);  
         player_->exist(false);
         reload_actors();
     }
@@ -285,14 +293,16 @@ int Level::draw(sf::RenderWindow* window) {
         window->draw(*score);
     }
 
-    if (!player_->exist()) {
+    if (!player_->exist() or victory_flag_) {
         window->draw(*Messege);
     }
-
-    if (enemies_.size() > asteroids_.size())
-        return enemies_.size();
+    if (victory_flag_) return 1;
     else {
-        return asteroids_.size();
+        if (enemies_.size() > asteroids_.size())
+            return enemies_.size();
+        else {
+            return asteroids_.size();
+        }
     }
 }
 

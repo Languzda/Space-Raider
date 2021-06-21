@@ -55,7 +55,7 @@ void Scene::window_loop(Level* lvl) {
     sf::Clock clock_shot;
    
     while (window_.isOpen()) { //when window is open check the events
-        for (int i = 1; i < 6; i++) {
+        for (int i = 1; i <= 6; i++) {
             this->set_level(lvl, i);
             do {
                 

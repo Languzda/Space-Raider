@@ -38,6 +38,7 @@ private:
     std::vector<sf::Sprite> scene_plain; //wektor zawieraj¹cy t³a gry
     sf::Texture scene_texture;//tekstura t³a gry
     Score* Messege; //Obiekt wiadomoœc s³u¿acy do informacji o pora¿ace
+    bool victory_flag_ = false;// flaga informauj¹ca a zwyciêstwie
 };
 
 

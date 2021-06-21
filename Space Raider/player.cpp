@@ -1,11 +1,10 @@
 #include "player.h"
 
 Hero::Hero(std::string texture_path, float scale, sf::IntRect rect, //konstruktor gracza
-    int x, int y, bool is_Repeated = false, int hp = 0) : Character(texture_path, scale, rect, x, y, is_Repeated, hp) {
+    int x, int y, bool is_Repeated = false, int hp = 0) : Character(texture_path, scale, rect, x, y, is_Repeated, hp),velocity_x_(0) {
     this->setTextureRect(sf::IntRect(155, 0, 155, 380));
     for (int i = 1; i < 4; i++) animationFrame_.emplace_back(sf::IntRect(155 * (i - 1), 0, 155, 380));
-    this->velocity_x_ = 0;
-    this->multishot_ = 1;
+    this->multishot_ = 2;
 }
 
 Hero::~Hero() {}
