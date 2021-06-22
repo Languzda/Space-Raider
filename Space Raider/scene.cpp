@@ -2,6 +2,11 @@
 
 Scene::Scene(int width, int height) : window_(sf::VideoMode(width, height), "Space Raiders") {
     window_.setFramerateLimit(30);
+    if (soundtrack_.openFromFile("mixkit.wav")) {
+        soundtrack_.setVolume(60);
+        soundtrack_.setLoop(true);
+        soundtrack_.play();
+    }
 };
 
 void Scene::set_level(Level* ptr,const int& nr_lvl ) {
@@ -20,14 +25,9 @@ int Scene::draw() {
     return what_next;
 }
 
-void Scene::events(sf::Event& event, const sf::Time& elapsed, sf::Clock& clock_shot) {
+void Scene::events(sf::Event& event, const sf::Time& elapsed, sf::Clock& clock_shot, int &timer) {
     if (event.type == sf::Event::Closed)    window_.close();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))    window_.close();
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::P)) {
-        //game pause
-    }
-
     
     {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
@@ -40,10 +40,9 @@ void Scene::events(sf::Event& event, const sf::Time& elapsed, sf::Clock& clock_s
             level_->move_player(0, 0);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) {
-            sf::Time shot_elapsed = clock_shot.restart();;
-            if (shot_elapsed.asSeconds() > 0.1) {
+            if (timer > 10) {
                 level_->create_player_bullet();
-                //shot_elapsed = clock_shot.restart();
+                timer = 0;
             }
         }
     }//player movement
@@ -55,13 +54,13 @@ void Scene::window_loop(Level* lvl) {
     sf::Clock clock_shot;
    
     while (window_.isOpen()) { //when window is open check the events
-        for (int i = 1; i <= 6; i++) {
+        for (int i = 1; i <= 8; i++) {
             this->set_level(lvl, i);
             do {
-                
+                timer3++;
                 sf::Time time_elapsed = clock.restart();
                 while (window_.pollEvent(event)) { //
-                    events(event, time_elapsed, clock_shot);
+                    events(event, time_elapsed, clock_shot, timer3);
 
                 }
                 if (nr_lvl == 1) {

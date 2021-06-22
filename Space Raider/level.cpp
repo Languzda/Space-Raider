@@ -67,11 +67,31 @@ void Level::generate(const sf::RenderWindow* window, int lvl_nr) {
     if (lvl_nr == 5) {
         clear_actors();
         scoreboads_[0]->update_score(100);
-        enemies_.emplace_back(new  Enemy("Textures/enemy.png", 0.4, sf::IntRect(0, 0, 590, 1180), window->getSize().x / 2, 100, false, 50, -75, 3));
+        for (int j = 0; j < 5; j++) {
+            for (int i = 0; i < 6; i++) {
+                enemies_.emplace_back(new  Enemy("Textures/enemy1.png", 1, sf::IntRect(0, 0, 216, 63), 100 * i + 25, window->getSize().y - (400 + 75 * j), false, 5, -65));
+                actors_.emplace_back(enemies_[enemies_.size() - 1]);
+            }
+        }
+    }
+    if (lvl_nr == 6) {
+        clear_actors();
+        scoreboads_[0]->update_score(100);
+        for (int j = 0; j < 3; j++) {
+            for (int i = 0; i < 5; i++) {
+                enemies_.emplace_back(new  Enemy("Textures/enemy1.png", 1, sf::IntRect(0, 0, 216, 63), 100 * i + 25, window->getSize().y - (400 + 100 * j), false, 8, -115));
+                actors_.emplace_back(enemies_[enemies_.size() - 1]);
+            }
+        }
+    }
+    if (lvl_nr == 7) {
+        clear_actors();
+        scoreboads_[0]->update_score(100);
+        enemies_.emplace_back(new  Enemy("Textures/enemy.png", 0.4, sf::IntRect(0, 0, 590, 1180), window->getSize().x / 2, 100, false, 100, -90, 4));
         actors_.emplace_back(enemies_[enemies_.size()-1]);
 
     }
-    if (lvl_nr == 6) {
+    if (lvl_nr == 8) {
         clear_actors();
         scoreboads_[0]->update_score(300);
         Messege  = new Score("ad_mono.ttf", sf::Vector2f(window_size_.x / 2 - 100, window_size_.y / 2), sf::Color::White, "\tVictory\npress escape to quit");
@@ -339,7 +359,7 @@ void Level::attack_player() {
 
 void Level::create_bonus(Enemy* &enemy) {
     if (player_->exist()) {
-        if (rand() % 5 == 0) {
+        if (rand() % 10 == 0) {
             int random = rand() % 3;
             if (random % 3 == 0) {
                 power_ups_.emplace_back(new PowerUpMultishot("Textures/MultiShot.png", 0.9, sf::IntRect(0, 0, 50, 50), enemy->getPosition().x-enemy->getGlobalBounds().width/2, enemy->getPosition().y, false));
