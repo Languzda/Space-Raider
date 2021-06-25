@@ -8,7 +8,6 @@ public:
     ~Asteroid();
     bool remake(); //metoda odpowiedzialna za zmiene paramtrów ateroidy w momencie zderzenia siê z granicami okna, zwraca wartoœc T/F czy obiekt powinien zostaæ usuniêty
     void moveA(); //poruszanie siê obiektem
-
 private:
     int life_span_ = 3; //czas zycia komety (ilosc powtorzen lotu)
     int velocity_x_ = 50; //wektor poruszania siê (Ox)

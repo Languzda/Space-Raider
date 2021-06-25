@@ -8,7 +8,6 @@ public:
 	~Projectile();
     void moveA(); //porsuzanie siê obiektu
     int getDmg(); //geter iloœci obra¿eñ pocisku
-    bool is_bouncy();
 protected:
     bool bounce_;
     int velocity_x; //wektor poruszania siê obeiktu (OX)
